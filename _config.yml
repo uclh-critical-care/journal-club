@@ -1,9 +1,9 @@
 # Site wide configuration
 
-title: Site Title
+title: UCLH Critical Care Journal club
 locale: en_US
-description: Describe your website here.
-logo: site-logo.png
+description: Journal club for the Critical Care Department<br/>University College Hospital London
+logo: microscope.png
 search: true
 url: http://localhost:4000
 
@@ -36,14 +36,14 @@ exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.
 
 # Site owner
 owner:
-  name: Your Name
-  avatar: bio-photo.jpg
-  email: you@email.com
+  name: Steve Harris
+  avatar: bio-skh.jpg
+  email: questions@steveharris.me
   disqus-shortname:
-  twitter: #username
+  twitter: drstevok
   facebook: #username
-  github: #username
-  stackexchange: #http://stackoverflow.com/users/123456/username
+  github: docsteveharris
+  stackexchange: http://stackoverflow.com/users/992999/drstevok
   linkedin: #username
   instagram: #username
   flickr: #username

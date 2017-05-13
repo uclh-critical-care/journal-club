@@ -9,18 +9,17 @@ image:
   creditlink: http://wegraphics.net/downloads/free-ultimate-blurred-background-pack/
 ---
 
-Looking for a simple, responsive, theme for your Jekyll powered blog? Well look no further. Here be **So Simple Theme**, the follow up to [**Minimal Mistakes**](http://mmistakes.github.io/minimal-mistakes) --- by designer slash illustrator [Michael Rose](http://mademistakes.com).
+Welcome to the wiki for the Critical Care Journal Club at UCLH.
 
-## So Simple Theme is all about:
+The short plan is to stop adding to the graveyard of powerpoint presentations on a shared drive, and create a living document that will remain relevant and useful.
 
-* Responsive templates. Looking good on mobile, tablet, and desktop.
-* Gracefully degrading in older browsers. Compatible with Internet Explorer 9+ and all modern browsers.
-* Minimal embellishments and subtle animations.
-* Optional large feature images for posts and pages.
-* [Custom 404 page]({{ site.url }}/404.html) to get you started.
-* [Simple site search](https://github.com/christian-fei/Simple-Jekyll-Search)
-* Support for Disqus Comments
+We are encouraging trainees to create a single mini-web page in place of a presentation. You then present your web page.
 
-<a markdown="0" href="{{ site.url }}/theme-setup" class="btn">Install So Simple Theme</a>
+---
 
-[^1]: Example: *domain.com/category-name/post-title*
+* [Dropbox folder for articles](https://www.dropbox.com/sh/by74a4l2s72st4u/AADFBLe91wVouYNBdEWV-Xsia?dl=0)
+* [[Rota for journal club]]
+* [[Resources for Evidence Based Appraisal]]
+* [Zotero library for journal club](https://www.zotero.org/groups/uclh-icu)
+
+You'll need to [email me](mailto:questions@steveharris.me) to be added to the journal club [Zotero library](https://www.zotero.org/groups/uclh-icu) to be able to see the available articles.
