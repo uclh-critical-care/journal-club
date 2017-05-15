@@ -33,6 +33,7 @@ import os
 import sys
 import json
 import yaml
+import requests
 from datetime import datetime
 from Bio import Entrez, Medline
 from Bio.Entrez import efetch, read
@@ -42,13 +43,19 @@ import argparse
 # os.getcwd()
 # os.chdir('src')
 
+
+def read_yaml(file_name):
+    '''read yaml from file'''
+    with open(file_name, 'r') as f:
+        d = yaml.load(f)
+    return(d)
+
 def get_trello_key(url='https://trello.com/app-key'):
     ''' Opens a web browser, calls Trello and after logging in displays key
     The user must save the key into private.yaml '''
     from webbrowser import open_new_tab
     open_new_tab(url)
 
-# Load configuration data
 def get_trello_token(app_name='trello2jekyll', trello_key=None, scope='write'):
     '''Get token for this app, default scope is read'''
     # Example URL
@@ -58,9 +65,8 @@ def get_trello_token(app_name='trello2jekyll', trello_key=None, scope='write'):
     from yaml import load
 
     if trello_key is None:
-        with open('private.yaml', 'r') as f:
-            private_keys = yaml.load(f)
-            trello_key = private_keys['trello-key']
+        private_keys = read_yaml('private.yaml')
+        trello_key = private_keys['trello-key']
 
     url_begin = 'https://trello.com/1/authorize?scope=read&expiration=never&name='
     url_end = '&key=' + trello_key + '&response_type=token'
@@ -73,12 +79,68 @@ def get_trello_token(app_name='trello2jekyll', trello_key=None, scope='write'):
     url = url_begin + app_name + url_end + url_scope
     open_new_tab(url)
 
-    return 0
+def all_boards(API, auth):
+    '''Return a list of all boards'''
+    boards_url = '{}members/me/boards{}'.format(API, auth)
+    try:
+        all_boards = requests.get(boards_url).json()
+    except requests.exceptions.ConnectionError as e:
+        print(e)
+    except requests.exceptions.Timeout as e:
+        # Time out
+        print(e)
+    except requests.exceptions.TooManyRedirects as e:
+        # Bad URL
+        print(e)
+    return all_boards
 
-get_trello_token()
+def get_board(BOARD_ID):
+    ''' Return a single board based on provided ID '''
+    boards = all_boards(API, auth)
+    try:
+        the_board = [b for b in boards if b['id'] == BOARD_ID][0]
+    except IndexError:
+        print('!!! Board not found, check you have provided the right BOARD_ID')
+    else:
+        print('--- Publishing from board: ' + the_board['name'])
+    return(the_board)
+
+
+def get_from_board(item, board_id, API, auth):
+    '''Return a list of cards, lists, plugins etc from a board'''
+    try:
+        assert item in ['cards', 'lists', 'pluginData']
+    except AssertionError as e:
+        print(e)
+        print('!!! ' + item + ' not recognised')
+        sys.exit(1)
+    url = '{}boards/{}/{}{}'.format(API, board_id, item, auth)
+
+    try:
+        _items = requests.get(url).json()
+    except requests.exceptions.ConnectionError as e:
+        print(e)
+    except requests.exceptions.Timeout as e:
+        # Time out
+        print(e)
+    except requests.exceptions.TooManyRedirects as e:
+        # Bad URL
+        print(e)
+    return _items
+
+def cards_from_list(list_name, cards, lists):
+    '''Filter cards by name of list'''
+    l = [i for i in lists if i['name'].lower() == list_name.lower()]
+    assert len(l) == 1
+    list_id = l[0]['id']
+    c = [j for j in cards if j['idList'] == list_id]
+    return c
+
 
 # Instructions and prompts to enable the script to work as an app with Trello
 # Connect to Trello
+
+
 # Read all the cards from the 3 lists
     # !!!Ready to Publish (publish)
     # !!!Published (a destination list)
@@ -130,7 +192,6 @@ def cli():
 
     args = parser.parse_args()
     article_dir = args.d
-    print(args)
 
     if args.trello_key is True:
         get_trello_key()
@@ -147,8 +208,51 @@ def cli():
         print('Folder', article_dir, 'not found')
         sys.exit(1)
 
+    return args
 
-    print('Publishing tasks completed!')
 
 if __name__ == '__main__':
-    cli()
+    args = cli()
+
+    # Load configuration data
+    # =======================
+    # API for trello
+    API = 'https://api.trello.com/1/'
+    # Read the API keys from the environment variables
+    CONFIG_PRIVATE = 'private.yaml'
+
+    # Keys
+    private_keys = read_yaml(CONFIG_PRIVATE)
+
+    API_KEY = private_keys['trello-key']
+    API_TOKEN = private_keys['trello-token']
+    auth = '?key={}&token={}'.format(API_KEY, API_TOKEN)
+
+    # Board to publish
+    BOARD_ID = private_keys['board2publish']
+
+    print('--- Configuration OK')
+
+    # Load boards, cards, lists, plugins
+    the_board = get_board(BOARD_ID)
+    pluginData = get_from_board('pluginData', BOARD_ID, API, auth)
+    lists = get_from_board('lists', BOARD_ID, API, auth)
+    cards = get_from_board('cards', BOARD_ID, API, auth)
+
+    try:
+        cards2publish = cards_from_list('!!!Ready to publish', cards=cards, lists=lists)
+        print('--- Found {} cards to publish'.format(len(cards2publish)))
+    except:
+        print('!!! Problem finding Ready to publish list')
+
+    try:
+        cards2unpublish = cards_from_list('!!!Unpublish', cards=cards, lists=lists)
+        print('--- Found {} cards to UNpublish'.format(len(cards2unpublish)))
+    except:
+        print('!!! Problem finding Unpublish list')
+
+
+
+
+
+    print('--- End of script: all tasks complete')
