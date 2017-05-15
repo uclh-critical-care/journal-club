@@ -39,6 +39,8 @@ post['editor'] = card['custom_fields']['Editor']
 post['reviewer'] = card['custom_fields']['Reviewer']
 post['review'] = card['desc']
 post['url_trello'] = card['shortUrl']
+post['shortlink_trello'] = card['shortLink']
+post['labels'] = [i['name'] for i in card['labels']]
 
 # Now write all these data out
 # Suggest convert into python dictionary, then write out as JSON?

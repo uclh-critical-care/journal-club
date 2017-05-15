@@ -3,12 +3,18 @@ import yaml
 from datetime import datetime
 import jinja2
 
-def gen_post_name(title):
+# def gen_post_name(title):
+#     ''' Define post name as per jekyll YEAR-MONTH-DAY-title.MARKUP '''
+#     reverse_date = datetime.today().strftime('%Y-%m-%d')
+#     # First five words of the title
+#     ti = str.split(title)[:5]
+#     f = reverse_date + '-' + '-'.join(ti) + '.md'
+#     return f
+
+def gen_post_name(url):
     ''' Define post name as per jekyll YEAR-MONTH-DAY-title.MARKUP '''
     reverse_date = datetime.today().strftime('%Y-%m-%d')
-    # First five words of the title
-    ti = str.split(title)[:5]
-    f = reverse_date + '-' + '-'.join(ti) + '.md'
+    f = reverse_date + '-' + url.lower() + '.md'
     return f
 
 # Format post data where needed
@@ -57,7 +63,7 @@ post['pmid_url']
 post['authors_all'] = list2string(post['authors'])
 post['post_date'] = datetime.today().strftime('%Y-%m-%dT%H:%M:%S')
 post['jekyll_tags'] = []
-post['jekyll_tags'].append(post['labels'])
+post['jekyll_tags'].extend(post['labels'])
 post['jekyll_tags'].append(text2tag(post['journal']))
 post['jekyll_tags'].append(text2tag(post['reviewer']))
 # post['jekyll_tags'].append('eggs')
@@ -101,7 +107,10 @@ outputText = template.render( post )
 
 print(outputText)
 
-file_name = gen_post_name(post['title'])
+post['shortlink_trello']
+
+# file_name = gen_post_name(post['title'])
+file_name = gen_post_name(post['shortlink_trello'])
 p = os.path.join('../_posts/articles', file_name)
 with open(p, 'wt') as f:
     f.write(outputText)
