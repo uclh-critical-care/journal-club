@@ -20,11 +20,16 @@ Aim: Build a static blog from a trello board that works for the journal club
 - [ ] @TODO: (2017-05-15) use columns for publishing, after publishing move article
 - [ ] @TODO: (2017-05-15) place comment on trello with link after publishing
 - [ ] @TODO: (2017-05-15) delete old post if re-appears in to publish column
+- [ ] @TODO: (2017-05-15) rewrite into single script that you can run from the command line
 
 ## Breadcrumbs
 
 
+# Notes
 
+Rewrite with try/except blocks
+Think about unit tests
+Think about class structure
 
 # Log
 
