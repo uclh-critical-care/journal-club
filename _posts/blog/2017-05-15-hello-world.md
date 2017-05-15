@@ -3,7 +3,7 @@ layout: post
 title: "Hello World"
 modified:
 categories: blog
-excerpt:
+excerpt: "Spam and eggs"
 tags: []
 image:
   feature:
