@@ -17,7 +17,7 @@ custom_fields:
   Editor: Steve Harris
   PubMed ID: '19446324'
   Reviewer: Nish Arulkumaran
-dateLastActivity: '2017-05-14T22:40:18.411Z'
+dateLastActivity: '2017-05-15T08:59:25.947Z'
 desc: '## Summary
 
 
@@ -70,12 +70,30 @@ id: 58d558e8352f842db48fb384
 idAttachmentCover: null
 idBoard: 58eb26a87854b9017b34685f
 idChecklists: []
-idLabels: []
+idLabels:
+- 59196dd8ced82109ff9d9374
+- 59196de5ced82109ff9d93d0
+- 59196dedced82109ff9d9408
 idList: 59161c64fd5e23a308c8c051
 idMembers: []
 idMembersVoted: []
 idShort: 5
-labels: []
+labels:
+- color: sky
+  id: 59196dd8ced82109ff9d9374
+  idBoard: 58eb26a87854b9017b34685f
+  name: rehab
+  uses: 1
+- color: lime
+  id: 59196de5ced82109ff9d93d0
+  idBoard: 58eb26a87854b9017b34685f
+  name: sepsis
+  uses: 1
+- color: pink
+  id: 59196dedced82109ff9d9408
+  idBoard: 58eb26a87854b9017b34685f
+  name: respiratory
+  uses: 1
 manualCoverAttachment: false
 name: 'Early physical and occupational therapy in mechanically ventilated, critically
   ill patients: a randomised controlled trial'

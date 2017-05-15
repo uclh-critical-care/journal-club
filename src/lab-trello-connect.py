@@ -14,7 +14,7 @@ import yaml
 
 # just to ensure in right place
 os.getcwd()
-os.chdir('/Users/steve/projects/cc-Journal Club/src')
+os.chdir('/Users/steve/projects/cc-Journal Club/site/src')
 os.getcwd()
 
 

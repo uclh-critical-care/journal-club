@@ -44,8 +44,8 @@ def text2tag(s):
     return ''.join(s)
 
 
-if os.getcwd() != '/Users/steve/projects/cc-Journal Club/src':
-    os.chdir('/Users/steve/projects/cc-Journal Club/src')
+if os.getcwd() != '/Users/steve/projects/cc-Journal Club/site/src':
+    os.chdir('/Users/steve/projects/cc-Journal Club/site/src')
 
 # Open dictionary
 with open('data-test.yml', 'r') as f:

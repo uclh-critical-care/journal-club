@@ -3,7 +3,7 @@
 title: UCLH Critical Care Journal club
 locale: en_US
 description: Journal club for the Critical Care Department<br/>University College Hospital London
-logo: microscope.png
+logo: microscope-whitebackground.png
 search: true
 url: http://localhost:4000
 
@@ -31,7 +31,7 @@ kramdown:
 mathjax: true
 
 include: [".htaccess"]
-exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", ".less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules", "Gemfile", "Gemfile.lock", "LICENSE", "README.md", "vendor"]
+exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", ".less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules", "Gemfile", "Gemfile.lock", "LICENSE", "README.md", "vendor", "src"]
 
 
 # Site owner

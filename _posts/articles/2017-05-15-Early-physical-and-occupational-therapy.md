@@ -3,7 +3,7 @@ layout: post
 title: "Early physical and occupational therapy in mechanically ventilated, critically ill patients: a randomised controlled trial."
 modified: 2017-05-15T12:40:37
 categories: articles
-excerpt: "BACKGROUND: Long-term complications of critical illness include intensive care unit (ICU)-acquired weakness and neuropsychiatric disease. Immobilisation secondary to sedation might potentiate these problems. We assessed the efficacy of combining daily"
+excerpt: "This appears to be a cost-effective intervention. However, the results are only applicable to a small subset of ICU patients who were previously well. It is unclear if the patient demographics locally would justify such an intervention."
 tags: [['lancet', 'nish_arulkumaran']]
 image:
   feature:

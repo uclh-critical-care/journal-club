@@ -3,11 +3,14 @@ layout: post
 title: "Datascience for Docs"
 categories: blog
 excerpt: "A new course to teach data science to clinicians using modern, free open source tools"
-tags: [news]
+tags: [news, education]
 image:
-  feature:
-date: 2014-08-08T15:39:55-04:00
-modified: 2016-06-01T14:19:19-04:00
+  feature: dsbc-course-flyer.jpg
+  thumb: dsbc-course-flyer-thumb.jpg
+  credit: Steve Harris
+  creditlink: http://datascibc.org
+date: 2017-05-15T12:55
+modified: 2017-05-15T12:55
 author: steve_harris
 ---
 
@@ -31,6 +34,8 @@ Such projects typically start with a paper form. Data is then laboriously transc
 
 We believe that 'data science' actually summarises a much better approach. Very simply it means documenting your work as code. Why code? Not just because it automates the process, but much more importantly it requires you to be precise about what you have done. We believe that with modern, free, open-source tools this is achievable with a very small amount of training. It is with this premise that we created the ['Data Science for Docs'](http://datascibc.org) course.
 
+![]({{site.url}}/images/dsbc-classroom.jpg)
+
 We teach the concept of a _data pipeline_ so that reproducibility becomes an immediate advantage. A single document, or script, encodes the steps necessary to take data from an online web form into R and out into a report, a simple analysis, or a beautiful data visualisation. When new data is entered, a single key stroke is needed to re-run the entire analysis and update the output. When you come back to your work after a break, the steps required to produce your report are clearly documented. And when you want to share your work, it’s as simple as sending a copy of your code to a collaborator.
 
 The tools necessary to do this work are freely available. Data can be collected on an online form (Google Forms), stored automatically in a Google Sheet, cleaned and analysed in R, and the graphs plotted interactively using online platforms such as Plotly.
@@ -53,7 +58,6 @@ The course has been supported but the Software Sustainability Institute who pion
 
 The [materials for the course](http://datascibc.org/Data-Science-for-Docs/) are freely available partly because we think this is the ‘right thing’ to do, and partly to provide a reference for people before and after the course. In the coming year, we will extend the course to a two-day format with a ‘bring your own data’ option on the second day. With a very high faculty-to-student ratio, we believe there is a very good chance that delegates will leave not just with a new set of skills, but with a completed analysis.
 
-![](images/dsbc-classroom.jpg)
 
 ---
 

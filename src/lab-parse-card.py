@@ -22,7 +22,7 @@ def read_medline(pmid):
 
 pmid = card['custom_fields']['PubMed ID']
 record = read_medline(pmid)
-help(record) # Inspect tags
+# help(record) # Inspect tags
 
 post = {}
 post['title'] = record['TI']
