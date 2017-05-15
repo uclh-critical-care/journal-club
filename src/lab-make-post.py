@@ -51,10 +51,13 @@ if os.getcwd() != '/Users/steve/projects/cc-Journal Club/site/src':
 with open('data-test.yml', 'r') as f:
     post = yaml.load(f)
 
+# https://www.ncbi.nlm.nih.gov/pubmed/?term=19446324
+post['pmid_url'] = 'https://www.ncbi.nlm.nih.gov/pubmed/?term=' + post['pmid']
+post['pmid_url']
 post['authors_all'] = list2string(post['authors'])
 post['post_date'] = datetime.today().strftime('%Y-%m-%dT%H:%M:%S')
 post['jekyll_tags'] = []
-post['journal']
+post['jekyll_tags'].append(post['labels'])
 post['jekyll_tags'].append(text2tag(post['journal']))
 post['jekyll_tags'].append(text2tag(post['reviewer']))
 # post['jekyll_tags'].append('eggs')
@@ -65,7 +68,12 @@ if 'excerpt' not in post.keys():
     excerpt = str.split(post['abstract'])[:30]
     post['excerpt'] = ' '.join(excerpt)
 
-# Make a header paragraph
+# Make a header paragraph as per reference
+# 1.	Schaller SJ, Anstey M, Blobner M, Edrich T, Grabitz
+# SD, Gradwohl-Matis I, et al. Early, goal-directed mobilisation in the surgical
+# intensive care unit: a randomised controlled trial. The Lancet. 2016;388:
+# 1377–1388. doi:10.1016/S0140-6736(16)31637-3
+
 s = list2string(post['authors'][:3]) + ', et al. '
 s = s + post['title']
 s = s + ' _' + post['journal'] + '_'
@@ -77,7 +85,6 @@ s = s + '' + post['doi'] + ''
 post['reference'] = s
 
 
-# 1.	Schaller SJ, Anstey M, Blobner M, Edrich T, Grabitz SD, Gradwohl-Matis I, et al. Early, goal-directed mobilisation in the surgical intensive care unit: a randomised controlled trial. The Lancet. 2016;388: 1377–1388. doi:10.1016/S0140-6736(16)31637-3
 
 # Sanitise
 for k,v in post.items():
@@ -92,9 +99,9 @@ TEMPLATE_FILE = "article-template.jinja"
 template = templateEnv.get_template( TEMPLATE_FILE )
 outputText = template.render( post )
 
-# print(outputText)
+print(outputText)
 
 file_name = gen_post_name(post['title'])
-p = os.path.join('../site/_posts/articles', file_name)
+p = os.path.join('../_posts/articles', file_name)
 with open(p, 'wt') as f:
     f.write(outputText)

@@ -2,7 +2,7 @@ badges:
   attachments: 2
   checkItems: 0
   checkItemsChecked: 0
-  comments: 0
+  comments: 1
   description: true
   due: null
   dueComplete: false
@@ -17,8 +17,8 @@ custom_fields:
   Editor: Steve Harris
   PubMed ID: '19446324'
   Reviewer: Nish Arulkumaran
-dateLastActivity: '2017-05-15T08:59:25.947Z'
-desc: '## Summary
+dateLastActivity: '2017-05-15T12:46:03.634Z'
+desc: '## Quick summary
 
 
   Delirium in sedated, mechanically ventilated ICU patients is common and associated

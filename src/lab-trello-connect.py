@@ -37,22 +37,6 @@ def read_yaml(file_name):
         d = yaml.load(f)
     return(d)
 
-def backup_board(board, args):
-    ''' Backup the board '''
-    board_details = requests.get(''.join((
-        '{}boards/{}{}&'.format(API, board["id"], auth),
-        'actions=all&actions_limit=1000&',
-        'cards={}&'.format(FILTERS[args.archived_cards]),
-        'card_attachments=true&',
-        'labels=all&',
-        'lists={}&'.format(FILTERS[args.archived_lists]),
-        'members=all&',
-        'member_fields=all&',
-        'checklists=all&',
-        'fields=all'
-    ))).json()
-
-
 def get_trello_token(app_name, trello_app_key):
     '''Get token for this app'''
     # Example URL

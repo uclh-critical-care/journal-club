@@ -53,9 +53,13 @@ doi: https://doi.org/10.1016/S0140-6736(09)60658-9
 editor: Steve Harris
 journal: Lancet
 journal_full: Lancet (London, England)
+labels:
+- rehab
+- sepsis
+- respiratory
 pages: 1874-82
 pmid: '19446324'
-review: '## Summary
+review: '## Quick summary
 
 
   Delirium in sedated, mechanically ventilated ICU patients is common and associated
