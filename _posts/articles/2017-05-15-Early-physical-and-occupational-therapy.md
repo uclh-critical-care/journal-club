@@ -1,15 +1,17 @@
 ---
 layout: post
 title: "Early physical and occupational therapy in mechanically ventilated, critically ill patients: a randomised controlled trial."
-modified: 2017-05-15T11:06:58
+modified: 2017-05-15T12:40:37
 categories: articles
-excerpt:
-tags: []
+excerpt: "BACKGROUND: Long-term complications of critical illness include intensive care unit (ICU)-acquired weakness and neuropsychiatric disease. Immobilisation secondary to sedation might potentiate these problems. We assessed the efficacy of combining daily"
+tags: [['lancet', 'nish_arulkumaran']]
 image:
   feature:
+author: Steve Harris
 ---
 
-Reviewed by __Nish Arulkumaran__
+
+__Nish Arulkumaran__ reviewing Schweickert WD, Pohlman MC, and Pohlman AS, et al. Early physical and occupational therapy in mechanically ventilated, critically ill patients: a randomised controlled trial. _Lancet_ **2009**;373;1874-82. https://doi.org/10.1016/S0140-6736(09)60658-9
 
 ## Summary
 
@@ -26,16 +28,6 @@ The benefits on patients with previous dependence on ADLs is not clear. There wa
 A decrease in ventilator days was noted in treatment arm. However it was among the non- survivors only. In other words, does the intervention alter illness trajectory among patients with a poor prognosis? This result is difficult to interpret and may be a chance finding, particularly with a relatively small patient cohort.
 
 # Medline citation
-
-## Journal
-
-**Lancet**
-
-## Authors
-
-Schweickert WD, Pohlman MC, Pohlman AS, Nigos C, Pawlik AJ, Esbrook CL, Spears L, Miller M, Franczyk M, Deprizio D, Schmidt GA, Bowman A, Barr R, McCallister KE, Hall JB, and Kress JP
-
-## Abstract
 
 > BACKGROUND: Long-term complications of critical illness include intensive care unit (ICU)-acquired weakness and neuropsychiatric disease. Immobilisation secondary to sedation might potentiate these problems. We assessed the efficacy of combining daily interruption of sedation with physical and occupational therapy on functional outcomes in patients receiving mechanical ventilation in intensive care. METHODS: Sedated adults (>/=18 years of age) in the ICU who had been on mechanical ventilation for less than 72 h, were expected to continue for at least 24 h, and who met criteria for baseline functional independence were eligible for enrolment in this randomised controlled trial at two university hospitals. We randomly assigned 104 patients by computer-generated, permuted block randomisation to early exercise and mobilisation (physical and occupational therapy) during periods of daily interruption of sedation (intervention; n=49) or to daily interruption of sedation with therapy as ordered by the primary care team (control; n=55). The primary endpoint-the number of patients returning to independent functional status at hospital discharge-was defined as the ability to perform six activities of daily living and the ability to walk independently. Therapists who undertook patient assessments were blinded to treatment assignment. Secondary endpoints included duration of delirium and ventilator-free days during the first 28 days of hospital stay. Analysis was by intention to treat. This trial is registered with ClinicalTrials.gov, number NCT00322010. FINDINGS: All 104 patients were included in the analysis. Return to independent functional status at hospital discharge occurred in 29 (59%) patients in the intervention group compared with 19 (35%) patients in the control group (p=0.02; odds ratio 2.7 [95% CI 1.2-6.1]). Patients in the intervention group had shorter duration of delirium (median 2.0 days, IQR 0.0-6.0 vs 4.0 days, 2.0-8.0; p=0.02), and more ventilator-free days (23.5 days, 7.4-25.6 vs 21.1 days, 0.0-23.8; p=0.05) during the 28-day follow-up period than did controls. There was one serious adverse event in 498 therapy sessions (desaturation less than 80%). Discontinuation of therapy as a result of patient instability occurred in 19 (4%) of all sessions, most commonly for perceived patient-ventilator asynchrony. INTERPRETATION: A strategy for whole-body rehabilitation-consisting of interruption of sedation and physical and occupational therapy in the earliest days of critical illness-was safe and well tolerated, and resulted in better functional outcomes at hospital discharge, a shorter duration of delirium, and more ventilator-free days compared with standard care. FUNDING: None.
 
