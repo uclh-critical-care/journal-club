@@ -50,6 +50,14 @@ def read_yaml(file_name):
         d = yaml.load(f)
     return(d)
 
+def dict_with_key_equal_to(l, k, v):
+    ''' Filters a list of dictionaries,
+    returns the dictionary with a key matching the value '''
+    l = [i for i in l if i[k].lower() == v.lower()]
+    # Check there's only 1 dictionary
+    assert len(l) == 1
+    return l[0]
+
 def get_trello_key(url='https://trello.com/app-key'):
     ''' Opens a web browser, calls Trello and after logging in displays key
     The user must save the key into private.yaml '''
@@ -105,7 +113,6 @@ def get_board(BOARD_ID):
         print('--- Publishing from board: ' + the_board['name'])
     return(the_board)
 
-
 def get_from_board(item, board_id, API, auth):
     '''Return a list of cards, lists, plugins etc from a board'''
     try:
@@ -128,6 +135,28 @@ def get_from_board(item, board_id, API, auth):
         print(e)
     return _items
 
+def get_card_plugin_data(CARD_ID, API, auth):
+    '''Return plug-in data from card'''
+    url = '{}cards/{}/pluginData{}'.format(API, CARD_ID, auth)
+    try:
+        _data = requests.get(url).json()
+    except requests.exceptions.ConnectionError as e:
+        print(e)
+    except requests.exceptions.Timeout as e:
+        # Time out
+        print(e)
+    except requests.exceptions.TooManyRedirects as e:
+        # Bad URL
+        print(e)
+    return _data
+
+def get_custom_fields(card_id, custom_field_dict, API, auth):
+    ''' Given a card convert custom fields into dictionary by field name '''
+    plugin_data = get_card_plugin_data(card_id, API, auth)
+    plugin_data = dict(json.loads(plugin_data[0]['value']))['fields']
+    custom_fields_clean = {cust_field_dict[k]:v for k,v in plugin_data.items()}
+    return custom_fields_clean
+
 def cards_from_list(list_name, cards, lists):
     '''Filter cards by name of list'''
     l = [i for i in lists if i['name'].lower() == list_name.lower()]
@@ -136,6 +165,20 @@ def cards_from_list(list_name, cards, lists):
     c = [j for j in cards if j['idList'] == list_id]
     return c
 
+def move_card_to_list(card_id, list_id, API, API_KEY, API_TOKEN):
+    ''' Move card to list '''
+    # URL for Put
+    url = '{}cards/{}/idList'.format(API, card_id)
+    params = {'key': API_KEY, 'token': API_TOKEN, 'value': list_id}
+    r = requests.put(url, params=params)
+    return r
+
+def add_comment_to_card(card_id, text, API, API_KEY, API_TOKEN):
+    ''' Add a comment to a card '''
+    url = '{}cards/{}/actions/comments'.format(API, card_id)
+    params = {'key': API_KEY, 'token': API_TOKEN, 'text': text}
+    r = requests.post(url, params=params)
+    return r
 
 # Instructions and prompts to enable the script to work as an app with Trello
 # Connect to Trello
@@ -235,9 +278,18 @@ if __name__ == '__main__':
 
     # Load boards, cards, lists, plugins
     the_board = get_board(BOARD_ID)
-    pluginData = get_from_board('pluginData', BOARD_ID, API, auth)
     lists = get_from_board('lists', BOARD_ID, API, auth)
     cards = get_from_board('cards', BOARD_ID, API, auth)
+
+    # Named lists
+    list_unpublish = dict_with_key_equal_to(lists, 'name', '!!!Unpublish')
+    list_ready2publish = dict_with_key_equal_to(lists, 'name', '!!!Ready to publish')
+    list_published = dict_with_key_equal_to(lists, 'name', '!!!Published')
+
+    # Get plug in data from board and create dictionary for custom fields
+    pluginData = get_from_board('pluginData', BOARD_ID, API, auth)
+    custom_fields = dict(json.loads(pluginData[0]['value']))['fields']
+    custom_field_dict = {i['id']: i['n'] for i in custom_fields}
 
     try:
         cards2publish = cards_from_list('!!!Ready to publish', cards=cards, lists=lists)
@@ -252,7 +304,25 @@ if __name__ == '__main__':
         print('!!! Problem finding Unpublish list')
 
 
+    for card in cards2unpublish:
+        # - [ ] @TODO: (2017-05-16) move corresponding blog post to archive
+        move_card_to_list(card['id'], list_ready2publish['id'], API, API_KEY, API_TOKEN)
+        reverse_timestamp = datetime.today().strftime('%Y-%m-%d %H:%S')
+        comment = 'Card unpublished at {}'.format(reverse_timestamp)
+        add_comment_to_card(card['id'], comment, API, API_KEY, API_TOKEN)
+        print('--- Unpublishing card {}: {} ...'.format(card['shortLink'], card['name'][:40]))
+
+    for card in cards2publish:
+        # - [ ] @TODO: (2017-05-16) pull pubmed data
+        # - [ ] @TODO: (2017-05-16) construct post and save
+        move_card_to_list(card['id'], list_published['id'], API, API_KEY, API_TOKEN)
+        reverse_timestamp = datetime.today().strftime('%Y-%m-%d %H:%S')
+        comment = 'Card published at {}'.format(reverse_timestamp)
+        add_comment_to_card(card['id'], comment, API, API_KEY, API_TOKEN)
+        print('--- Publishing card {}: {} ...'.format(card['shortLink'], card['name'][:40]))
 
 
 
-    print('--- End of script: all tasks complete')
+
+
+    print("--- End of script: Don't forget to push your changes to github")
