@@ -5,7 +5,8 @@ locale: en_US
 description: Journal club for the Critical Care Department<br/>University College Hospital London
 logo: microscope-whitebackground.png
 search: true
-url: http://localhost:4000
+# url: http://localhost:4000
+url: http://uclh-critical-care.github.io/journal-club
 
 # Jekyll configuration
 
