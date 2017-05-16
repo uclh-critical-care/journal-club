@@ -34,10 +34,13 @@ import sys
 import json
 import yaml
 import requests
+import argparse
+import jinja2
+import unicodedata
 from datetime import datetime
 from Bio import Entrez, Medline
 from Bio.Entrez import efetch, read
-import argparse
+from glob import glob
 
 # Debugging hacks
 # os.getcwd()
@@ -57,6 +60,16 @@ def dict_with_key_equal_to(l, k, v):
     # Check there's only 1 dictionary
     assert len(l) == 1
     return l[0]
+
+# Instructions and prompts to enable the script to work as an app with Trello
+# Connect to Trello
+
+
+# Read all the cards from the 3 lists
+    # !!!Ready to Publish (publish)
+    # !!!Published (a destination list)
+    # !!!Unpublish (i.e. remove blog post)
+# Process cards
 
 def get_trello_key(url='https://trello.com/app-key'):
     ''' Opens a web browser, calls Trello and after logging in displays key
@@ -180,15 +193,6 @@ def add_comment_to_card(card_id, text, API, API_KEY, API_TOKEN):
     r = requests.post(url, params=params)
     return r
 
-# Instructions and prompts to enable the script to work as an app with Trello
-# Connect to Trello
-
-
-# Read all the cards from the 3 lists
-    # !!!Ready to Publish (publish)
-    # !!!Published (a destination list)
-    # !!!Unpublish (i.e. remove blog post)
-# Process cards
 
 # Unpublish blog post
 # move file into _unpublished folder with timestamp in filename
@@ -202,6 +206,87 @@ def add_comment_to_card(card_id, text, API, API_KEY, API_TOKEN):
 # Make file using jinja template, save into _posts/articles
 # move card into !!!Published list
 # add comment regarding above into card
+
+def gen_post_name(text):
+    ''' Define post name as per jekyll YEAR-MONTH-DAY-text.MARKUP '''
+    reverse_date = datetime.today().strftime('%Y-%m-%d')
+    f = reverse_date + '-' + text + '.md'
+    return f
+
+# Format post data where needed
+def list2string(l):
+    '''Convert list of text to comma separated string with final "and" '''
+    s = ', '.join(l[:-1]) + ', and ' + l[-1]
+    return s
+
+def sanitise_text(s, ascii=True):
+    '''Convert to default unicode mapping etc'''
+    # Remove leading and trailing white space
+    s = s.strip()
+    s = unicodedata.normalize('NFC', s)
+    if ascii:
+        # Encode then decode to force drop all non ascii characters
+        s = s.encode('ascii', 'ignore').decode('ascii')
+    return s
+
+def text2tag(s):
+    '''Convert string to lower case, replace white space with underscore'''
+    legal_chars = '_abcdefghijklmnopqrstuvwxyz0123456789'
+    remap_whitespace = {
+        ord(' ') : '_',
+        ord('\t') : '_',
+        ord('\n') : '_',
+        ord('\f') : '_',
+        ord('\r') : None
+    }
+    s = s.translate(remap_whitespace)
+    s = s.lower()
+    s = [c for c in s if c in legal_chars]
+    return ''.join(s)
+
+def read_medline(pmid, email):
+    '''Read a pubmed record identified by its PMID as Medline text'''
+    # Must register email for Bio.Entrez to work
+    Entrez.email = email
+    try:
+        handle = Entrez.efetch(db='pubmed', id=pmid, retmode='text', rettype='medline')
+    except Exception as e:
+        print('!!! Unable to retrieve PubMed record: {}'.format(e))
+    records = Medline.parse(handle)
+    record = next(records)
+    # Now check you only got one record as per http://stackoverflow.com/a/7460986
+    assert sum(1 for x in records) == 0
+    handle.close()
+    return record
+
+def format_reference(record):
+    ''' Takes Medline record and returns BMJ style formatted reference '''
+
+    # Check all keys present
+    assert len([i
+        for i in ['AU', 'TI', 'TA', 'DP', 'VI', 'PG', 'LID']
+        if i not in record.keys()]
+        ) == 0
+
+    s = list2string(record['AU'][:3]) + ', et al. '
+    s = s + record['TI']
+    s = s + ' _' + record['TA'] + '_'
+    s = s + ' **' + str.split(record['DP'])[0] + '**;'
+    s = s + '' + record['VI'] + ';'
+    s = s + '' + record['PG'] + '. '
+    s = s + 'https://doi.org/' + str.split(record['LID'])[0] + ''
+    return s
+
+def make_post(template_file, data):
+    ''' Create a Jekyll formatted blog post using provided data and template '''
+    templateLoader = jinja2.FileSystemLoader(searchpath='.')
+    templateEnv = jinja2.Environment( loader=templateLoader )
+    template = templateEnv.get_template( TEMPLATE_FILE )
+    outputText = template.render( data )
+    return outputText
+
+# Command line interaction
+# ========================
 
 def cli():
     ''' Command line interface for running script '''
@@ -259,14 +344,23 @@ if __name__ == '__main__':
 
     # Load configuration data
     # =======================
+    # Need to register an email with Entrez else won't run
+    ENTREZ_EMAIL = 'm@steveharris.me'
     # API for trello
     API = 'https://api.trello.com/1/'
     # Read the API keys from the environment variables
     CONFIG_PRIVATE = 'private.yaml'
+    # JINJA template file for article
+    TEMPLATE_FILE = "article-template.jinja"
+    # Article destination directory
+    ARTICLE_PATH = args.d
+    UNPUBLISH_PATH = '../_unpublished'
+    # Permalink stem http://uclh-critical-care.github.io/journal-club/articles/
+    URL_SITE = 'http://uclh-critical-care.github.io/journal-club/articles/'
 
-    # Keys
+    # Keys (stored locally, make sure in .gitignore to avoid inadvertent publication)
+    # Extract private configuration keys from local YAML file
     private_keys = read_yaml(CONFIG_PRIVATE)
-
     API_KEY = private_keys['trello-key']
     API_TOKEN = private_keys['trello-token']
     auth = '?key={}&token={}'.format(API_KEY, API_TOKEN)
@@ -306,18 +400,97 @@ if __name__ == '__main__':
 
     for card in cards2unpublish:
         # - [ ] @TODO: (2017-05-16) move corresponding blog post to archive
+        # ARTICLE_PATH = '../_posts/articles'
+        # os.listdir(ARTICLE_PATH)
+        try:
+            post_path = glob('{}/*{}*.md'.format(ARTICLE_PATH, card['shortLink']))
+            assert len(post_path) == 1
+            post_path = post_path[0]
+        except AssertionError as e:
+            print(
+                '!!! Found {} files, expecting 1 when trying to unpublish {}'.format(
+                len(post_path), card['name'][:40]))
+            print(e)
+
+        try:
+            to_path = os.path.join(UNPUBLISH_PATH, os.path.basename(post_path))
+            os.rename(post_path, to_path)
+        except Exception as e:
+            print('!!! Problem moving file from {} to {}'.format(post_path, to_path))
+
+
         move_card_to_list(card['id'], list_ready2publish['id'], API, API_KEY, API_TOKEN)
         reverse_timestamp = datetime.today().strftime('%Y-%m-%d %H:%S')
-        comment = 'Card unpublished at {}'.format(reverse_timestamp)
+        comment = '''Card unpublished at {} \nFile moved from {} to {}'''.format(
+            reverse_timestamp, post_path, to_path)
         add_comment_to_card(card['id'], comment, API, API_KEY, API_TOKEN)
         print('--- Unpublishing card {}: {} ...'.format(card['shortLink'], card['name'][:40]))
 
     for card in cards2publish:
-        # - [ ] @TODO: (2017-05-16) pull pubmed data
+
+        # Get PubMed data and construct a dictionary from card + pubmed
+        pmid = card['custom_fields']['PubMed ID']
+        record = read_medline(pmid, email=ENTREZ_EMAIL)
+        print('--- Found PubMed data for PMID {}'.format(pmid))
+        # Check no duplicate keys then merge data
+        assert len([i for i in card.keys() if i in record.keys()]) == 0
+
+        # Add formatted citation into data
+        data = {**card, **record}
+        data['citation'] = format_reference(record)
+
+        # Add formatted author list into data
+        data['authors_all'] = list2string(record['AU'])
+        data['post_date'] = datetime.today().strftime('%Y-%m-%dT%H:%M:%S')
+
+        # Add tags into data
+        data['jekyll_tags'] = []
+        data['jekyll_tags'].append(text2tag(record['TA']))
+        data['jekyll_tags'].append(text2tag(card['custom_fields']['Reviewer']))
+        # Use card labels as tags too
+        card_labels = [l['name'] for l in card['labels']]
+        data['jekyll_tags'].extend(card_labels)
+
+        # Santise all text
+        for k,v in data.items():
+            if type(v) == str:
+                data[k] = sanitise_text(v)
+
+        # Pass data to blog post making function
         # - [ ] @TODO: (2017-05-16) construct post and save
+        try:
+            article_text = make_post(TEMPLATE_FILE, data)
+        except Exception:
+            print('!!! Failed to generate blog post from article template')
+
+        # article_text
+        # Generate a file name for the blog post using shortLink as unique ID
+        post_name = gen_post_name(data['shortLink'])
+        # ARTICLE_PATH = '../_posts/articles'
+        post_path = os.path.join(ARTICLE_PATH, post_name)
+        post_url = URL_SITE + '/articles/' + data['shortLink']
+
+        # Save text to file
+        try:
+            with open(post_path, 'wt') as f:
+                f.write(article_text)
+        except OSError as e:
+                print('!!! Error writing post to file: {}'.format(e))
+
+
+
+        # Move card to list, and post link to blog post in comments
         move_card_to_list(card['id'], list_published['id'], API, API_KEY, API_TOKEN)
         reverse_timestamp = datetime.today().strftime('%Y-%m-%d %H:%S')
-        comment = 'Card published at {}'.format(reverse_timestamp)
+        # - [ ] @TODO: (2017-05-16) add permalink to blog post in comments
+        comment = '''Card published at {}
+        File path: {}
+        URL: {}
+        '''.format(
+            reverse_timestamp,
+            post_path,
+            post_url
+            )
         add_comment_to_card(card['id'], comment, API, API_KEY, API_TOKEN)
         print('--- Publishing card {}: {} ...'.format(card['shortLink'], card['name'][:40]))
 
