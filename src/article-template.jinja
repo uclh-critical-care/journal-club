@@ -1,26 +1,27 @@
 ---
 layout: post
-title: "{{title}}"
+title: "{{name}}"
 modified: {{post_date}}
 categories: articles
-excerpt: "{{excerpt}}"
+excerpt: "{{slug}}"
 tags: [{{jekyll_tags}}]
 image:
   feature:
-author: {{editor}}
+author: {{custom_fields['Editor']}}
 ---
 
+__{{custom_fields['Reviewer']}}__ reviewing {{citation}}
 
-__{{reviewer}}__ reviewing {{reference}}
+Links: [PubMed]({{pubmed_url}}) [Trello]({{shortUrl}})
 
-Edited by __{{editor}}__
+### Commentary
 
-Links: [PubMed]({{pmid_url}})[^abstract] [Trello]({{url_trello}})
-
-{{review}}
+{{desc}}
 
 ---
 
-# Abstract (Pubmed)
+### Pubmed abstract
 
-[^abstract]: {{abstract}}
+> {{AB}}
+
+Edited by __{{custom_fields['Editor']}}__

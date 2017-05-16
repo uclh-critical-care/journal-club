@@ -1,28 +1,26 @@
-# So Simple Theme
+# UCLH Critical Care Journal Club
 
-Looking for a simple, responsive, theme for your Jekyll powered blog? Well look no further. Here be **So Simple Theme**, the followup to [**Minimal Mistakes**](http://mmistakes.github.io/minimal-mistakes/) -- by designer slash illustrator [Michael Rose](http://mademistakes.com).
+The journal club is run from two trello boards.
+A shared [board](https://trello.com/b/SrkK31HB) for all the trainees where articles are posted, and selected.
+A [board for editing and publishing summaries](https://trello.com/b/jTuloSE3) from the journal club.
 
-## Notable features:
+After a presentation, the presenter should save a 200-300 word commentary to the description part of the card. They will also be responsible for adding the following fields:
 
-* Compatible with Jekyll 3 and GitHub Pages.
-* Responsive templates. Looks good on mobile, tablet, and desktop devices.
-* Gracefully degrading in older browsers. Compatible with Internet Explorer 9+ and all modern browsers.
-* Minimal embellishments and subtle animations.
-* Optional large feature images for posts and pages.
-* [Custom 404 page](http://mmistakes.github.io/so-simple-theme/404.html) to get you started.
-* Basic [search capabilities](https://github.com/mathaywarduk/jekyll-search)
-* Support for Disqus Comments
+- DOI
+- Pubmed ID
+- Reviewer's first and last name (for credit on the blog)
 
-![screenshot of So Simple Theme](http://mmistakes.github.io/so-simple-theme/images/so-simple-theme-preview.jpg)
+The editorial team will then copy that card over to the board that works as a [blogging tool](https://trello.com/b/jTuloSE3). The commentary should be reviewed, and the links should be checked (and corrected if needed). When the article is ready to publish, then simply move the card from the 'Awaiting editorial review' list into the '!!!Ready to publish list'.
 
-See a [live version of So Simple](http://mmistakes.github.io/so-simple-theme/) hosted on GitHub.
+Lists prefixed with `!!!` (three exclamation marks) are managed by the Python script that converts the Trello card to a properly formatted Jekyll post. Moving cards from one list to another should trigger the actions described in the title the next time the `trello2jekyll.py` script runs.
 
----
 
-## Getting Started
+- [ ] @TODO: (2017-05-15) add note about email to board settings
+- [ ] @TODO: (2017-05-15) move the script and the blog onto a server where it can run regularly.
 
-So Simple takes advantage of Sass and data files to make customizing easier and requires Jekyll 3.x.
+## Configuration
 
-To learn how to install and use this theme check out the [Setup Guide](http://mmistakes.github.io/so-simple-theme/theme-setup/) for more information.
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mmistakes/so-simple-theme/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+- To get the API key: https://trello.com/app-key
+- To get the token: https://trello.com/1/authorize?scope=read&expiration=never&name=backup&key=REPLACE_WITH_YOUR_API_KEY&response_type=token
+k
