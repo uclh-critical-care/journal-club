@@ -19,7 +19,7 @@ The ambition is that people might start to come here as a useful revision resour
 
 ---
 
-The site is run by linking a Trello board to a Jekyll blog hosted (for now) at GitHub. You can see the script, and contribute(!) if you want at 
-If you're interested in
+The site is run by linking a Trello board to a Jekyll blog hosted (for now) at GitHub. You can see the script, and contribute(!) at the [GitHub repo](https://github.com/uclh-critical-care/journal-club).
+
 
 ---
