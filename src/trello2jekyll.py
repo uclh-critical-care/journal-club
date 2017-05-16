@@ -468,7 +468,7 @@ if __name__ == '__main__':
             data['slug'] = ' '.join(slug)
         else:
             data['slug'] = tweet[:140]
-
+        data['slug'] = data['slug'] + ' (Reviewed by {})'.format(card['custom_fields']['Reviewer'])
 
         # Santise all text
         for k,v in data.items():

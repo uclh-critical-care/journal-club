@@ -13,14 +13,25 @@ Aim: Build a static blog from a trello board that works for the journal club
 - [x] @TODO: (2017-05-13) prep the jekyll site
 - [x] @TODO: (2017-05-12) create a markdown file for a jekyll post
 - [x] @TODO: (2017-05-13) use jinja as the templating engine
-- [ ] @TODO: (2017-05-12) publish
+- [x] @TODO: (2017-05-12) publish
 - [x] @TODO: (2017-05-13) authors override in so-simple theme, set up authors.yaml for each editor
 - [x] @TODO: (2017-05-13) add datascibc article to site
-- [ ] @TODO: (2017-05-15) use labels as tags
-- [ ] @TODO: (2017-05-15) use columns for publishing, after publishing move article
-- [ ] @TODO: (2017-05-15) place comment on trello with link after publishing
-- [ ] @TODO: (2017-05-15) delete old post if re-appears in to publish column
-- [ ] @TODO: (2017-05-15) rewrite into single script that you can run from the command line
+- [x] @TODO: (2017-05-15) use labels as tags
+- [x] @TODO: (2017-05-15) use columns for publishing, after publishing move article
+- [x] @TODO: (2017-05-15) place comment on trello with link after publishing
+- [x] @TODO: (2017-05-15) delete old post if re-appears in to publish column
+- [x] @TODO: (2017-05-15) rewrite into single script that you can run from the command line
+- [x] @TODO: (2017-05-15) set up to run as CLI
+
+### Next
+
+- [ ] @TODO: (2017-05-15) set-up as docker to manage dependencies
+- [ ] @TODO: (2017-05-16) check for updates on published cards and republish these
+- [ ] @TODO: (2017-05-16) formatting, smaller font for medline
+- [ ] @TODO: (2017-05-16) add link to download presentation
+- [ ] @TODO: (2017-05-16) fix editor link on blog
+- [x] @TODO: (2017-05-16) fix about page
+- [ ] @TODO: (2017-05-16) option to republish all in published column (e.g. where design changes)
 
 ## Breadcrumbs
 
@@ -65,3 +76,6 @@ install biopython and use Entrez submodule
 
 blog theme
 https://heiswayi.nrird.com/thinkspace/
+
+Much credit to https://github.com/jtpio/trello-full-backup
+Used this as inspiration for building script and getting my hands dirty with the Trello API

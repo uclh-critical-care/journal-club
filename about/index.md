@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About the Jekyll Theme
+title: A journal club, and revision resource
 excerpt: "So Simple is a responsive Jekyll theme for your words and images."
 modified: 2014-08-08T19:44:38.564948-04:00
 image:
@@ -15,11 +15,11 @@ The short plan is to stop adding to the graveyard of powerpoint presentations on
 
 We are encouraging trainees to create a single mini-web page in place of a presentation. You then present your web page.
 
+The ambition is that people might start to come here as a useful revision resource.
+
 ---
 
-* [Dropbox folder for articles](https://www.dropbox.com/sh/by74a4l2s72st4u/AADFBLe91wVouYNBdEWV-Xsia?dl=0)
-* [[Rota for journal club]]
-* [[Resources for Evidence Based Appraisal]]
-* [Zotero library for journal club](https://www.zotero.org/groups/uclh-icu)
+The site is run by linking a Trello board to a Jekyll blog hosted (for now) at GitHub. You can see the script, and contribute(!) if you want at 
+If you're interested in
 
-You'll need to [email me](mailto:questions@steveharris.me) to be added to the journal club [Zotero library](https://www.zotero.org/groups/uclh-icu) to be able to see the available articles.
+---
