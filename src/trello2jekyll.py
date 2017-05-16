@@ -428,6 +428,7 @@ if __name__ == '__main__':
 
     for card in cards2publish:
 
+        # card = cards2publish[0]
         # Load and format custom fields
         card['custom_fields'] = get_custom_fields(
             card['id'],
@@ -459,6 +460,15 @@ if __name__ == '__main__':
 
         # Add pubmed URL
         data['pubmed_url'] = 'https://www.ncbi.nlm.nih.gov/pubmed/?term={}'.format(pmid)
+
+        # Add tweet (doubles a slug) or use first 30 words of abstract
+        tweet = card['custom_fields']['Tweet']
+        if len(tweet) == 0:
+            slug = str.split(data['AB'])[:30]
+            data['slug'] = ' '.join(slug)
+        else:
+            data['slug'] = tweet[:140]
+
 
         # Santise all text
         for k,v in data.items():
