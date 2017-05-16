@@ -167,7 +167,7 @@ def get_custom_fields(card_id, custom_field_dict, API, auth):
     ''' Given a card convert custom fields into dictionary by field name '''
     plugin_data = get_card_plugin_data(card_id, API, auth)
     plugin_data = dict(json.loads(plugin_data[0]['value']))['fields']
-    custom_fields_clean = {cust_field_dict[k]:v for k,v in plugin_data.items()}
+    custom_fields_clean = {custom_field_dict[k]:v for k,v in plugin_data.items()}
     return custom_fields_clean
 
 def cards_from_list(list_name, cards, lists):
@@ -356,7 +356,7 @@ if __name__ == '__main__':
     ARTICLE_PATH = args.d
     UNPUBLISH_PATH = '../_unpublished'
     # Permalink stem http://uclh-critical-care.github.io/journal-club/articles/
-    URL_SITE = 'http://uclh-critical-care.github.io/journal-club/articles/'
+    URL_SITE = 'http://uclh-critical-care.github.io/journal-club'
 
     # Keys (stored locally, make sure in .gitignore to avoid inadvertent publication)
     # Extract private configuration keys from local YAML file
@@ -416,17 +416,23 @@ if __name__ == '__main__':
             to_path = os.path.join(UNPUBLISH_PATH, os.path.basename(post_path))
             os.rename(post_path, to_path)
         except Exception as e:
-            print('!!! Problem moving file from {} to {}'.format(post_path, to_path))
+            print('!!! Problem moving file from {} to {}'.format(post_path, UNPUBLISH_PATH))
 
 
         move_card_to_list(card['id'], list_ready2publish['id'], API, API_KEY, API_TOKEN)
         reverse_timestamp = datetime.today().strftime('%Y-%m-%d %H:%S')
         comment = '''Card unpublished at {} \nFile moved from {} to {}'''.format(
-            reverse_timestamp, post_path, to_path)
+            reverse_timestamp, post_path, UNPUBLISH_PATH)
         add_comment_to_card(card['id'], comment, API, API_KEY, API_TOKEN)
         print('--- Unpublishing card {}: {} ...'.format(card['shortLink'], card['name'][:40]))
 
     for card in cards2publish:
+
+        # Load and format custom fields
+        card['custom_fields'] = get_custom_fields(
+            card['id'],
+            custom_field_dict,
+            API, auth)
 
         # Get PubMed data and construct a dictionary from card + pubmed
         pmid = card['custom_fields']['PubMed ID']
@@ -450,6 +456,9 @@ if __name__ == '__main__':
         # Use card labels as tags too
         card_labels = [l['name'] for l in card['labels']]
         data['jekyll_tags'].extend(card_labels)
+
+        # Add pubmed URL
+        data['pubmed_url'] = 'https://www.ncbi.nlm.nih.gov/pubmed/?term={}'.format(pmid)
 
         # Santise all text
         for k,v in data.items():

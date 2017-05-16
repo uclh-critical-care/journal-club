@@ -1,22 +1,24 @@
 ---
 layout: post
-title: "{{title}}"
+title: "{{name}}"
 modified: {{post_date}}
 categories: articles
 excerpt: "{{excerpt}}"
 tags: [{{jekyll_tags}}]
 image:
   feature:
-author: {{editor}}
+author: {{custom_fields['Editor']}}
 ---
 
+__{{custom_fields['Reviewer']}}__ reviewing {{citation}}
 
-__{{reviewer}}__ reviewing {{reference}}
+Links: [PubMed]({{pubmed_url}}) [Trello]({{shortUrl}})
 
-{{review}}
+
+{{desc}}
 
 # Medline citation
 
-> {{abstract}}
+> {{AB}}
 
-Edited by __{{editor}}__
+Edited by __{{custom_fields['Editor']}}__
