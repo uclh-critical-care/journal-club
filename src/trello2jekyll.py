@@ -262,19 +262,39 @@ def read_medline(pmid, email):
 def format_reference(record):
     ''' Takes Medline record and returns BMJ style formatted reference '''
 
-    # Check all keys present
-    assert len([i
-        for i in ['AU', 'TI', 'TA', 'DP', 'VI', 'PG', 'LID']
-        if i not in record.keys()]
-        ) == 0
+    l = ['AU', 'TI', 'TA', 'DP', 'VI', 'PG']
 
-    s = list2string(record['AU'][:3]) + ', et al. '
-    s = s + record['TI']
-    s = s + ' _' + record['TA'] + '_'
-    s = s + ' **' + str.split(record['DP'])[0] + '**;'
-    s = s + '' + record['VI'] + ';'
-    s = s + '' + record['PG'] + '. '
-    s = s + 'https://doi.org/' + str.split(record['LID'])[0] + ''
+    if 'LID' in record.keys():
+        doi = 'https://doi.org/' + str.split(record['LID'])[0]
+    elif 'AID' in record.keys():
+        doi = 'https://doi.org/' + str.split(record['AID'][0])[0]
+    elif 'PMC' in record.keys():
+        # Use PMC as fallback
+        doi = 'https://www.ncbi.nlm.nih.gov/pmc/articles/' + record['PMC']
+    else:
+        doi = 'https://www.ncbi.nlm.nih.gov/pubmed/' + record['PMID']
+
+    # Check all keys present
+    try:
+        l = [i for i in l if i not in record.keys()]
+        assert len(l) == 0
+    except AssertionError as e:
+        print('!!! missing fields ({}) to construct citation'.format(l))
+        print(record)
+        s = list2string(record['AU'][:3]) + ', et al. '
+        s = s + record['TI']
+        s = s + ' _' + record['SO'] + '_'
+        s = s + doi + ''
+        sys.exit(1)
+    else:
+        s = list2string(record['AU'][:3]) + ', et al. '
+        s = s + record['TI']
+        s = s + ' _' + record['TA'] + '_'
+        s = s + ' **' + str.split(record['DP'])[0] + '**;'
+        s = s + '' + record['VI'] + ';'
+        s = s + '' + record['PG'] + '. '
+        s = s + doi + ''
+
     return s
 
 def make_post(template_file, data):
