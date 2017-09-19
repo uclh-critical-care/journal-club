@@ -482,12 +482,12 @@ if __name__ == '__main__':
         data['pubmed_url'] = 'https://www.ncbi.nlm.nih.gov/pubmed/?term={}'.format(pmid)
 
         # Add tweet (doubles a slug) or use first 30 words of abstract
-        tweet = card['custom_fields']['Tweet']
-        if len(tweet) == 0:
+        try:
+            tweet = card['custom_fields']['Tweet']
+            data['slug'] = tweet[:140]
+        except KeyError:
             slug = str.split(data['AB'])[:30]
             data['slug'] = ' '.join(slug)
-        else:
-            data['slug'] = tweet[:140]
         data['slug'] = data['slug'] + ' (Reviewed by {})'.format(card['custom_fields']['Reviewer'])
 
         # Santise all text
