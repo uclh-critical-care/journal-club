@@ -129,7 +129,7 @@ def get_board(BOARD_ID):
 def get_from_board(item, board_id, API, auth):
     '''Return a list of cards, lists, plugins etc from a board'''
     try:
-        assert item in ['cards', 'lists', 'pluginData']
+        assert item in ['cards', 'lists', 'customFields']
     except AssertionError as e:
         print(e)
         print('!!! ' + item + ' not recognised')
@@ -150,7 +150,10 @@ def get_from_board(item, board_id, API, auth):
 
 def get_card_plugin_data(CARD_ID, API, auth):
     '''Return plug-in data from card'''
-    url = '{}cards/{}/pluginData{}'.format(API, CARD_ID, auth)
+    # - [ ] FIXME  2018-05-30: URL format changed
+    # https://developers.trello.com/v1.0/reference#cardsidcustomfielditems
+    # url = '{}cards/{}/pluginData{}'.format(API, CARD_ID, auth)
+    url = '{}cards/{}/customFieldItems{}'.format(API, CARD_ID, auth)
     try:
         _data = requests.get(url).json()
     except requests.exceptions.ConnectionError as e:
@@ -166,8 +169,9 @@ def get_card_plugin_data(CARD_ID, API, auth):
 def get_custom_fields(card_id, custom_field_dict, API, auth):
     ''' Given a card convert custom fields into dictionary by field name '''
     plugin_data = get_card_plugin_data(card_id, API, auth)
-    plugin_data = dict(json.loads(plugin_data[0]['value']))['fields']
-    custom_fields_clean = {custom_field_dict[k]:v for k,v in plugin_data.items()}
+    custom_fields = {i['idCustomField']:i['value']['text'] for i in plugin_data}
+    custom_fields_clean = {custom_field_dict[k]:v for k,v in custom_fields.items()}
+
     return custom_fields_clean
 
 def cards_from_list(list_name, cards, lists):
@@ -401,9 +405,10 @@ if __name__ == '__main__':
     list_published = dict_with_key_equal_to(lists, 'name', '!!!Published')
 
     # Get plug in data from board and create dictionary for custom fields
-    pluginData = get_from_board('pluginData', BOARD_ID, API, auth)
-    custom_fields = dict(json.loads(pluginData[0]['value']))['fields']
-    custom_field_dict = {i['id']: i['n'] for i in custom_fields}
+    pluginData = get_from_board('customFields', BOARD_ID, API, auth)
+
+    # custom_fields = dict(json.loads(pluginData[0]['value']))['fields']
+    custom_field_dict = {i['id']: i['name'] for i in pluginData}
 
     try:
         cards2publish = cards_from_list('!!!Ready to publish', cards=cards, lists=lists)
