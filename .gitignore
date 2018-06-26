@@ -10,3 +10,4 @@ private.yaml
 _unpublished/*
 scratch.py
 *.orig
+venv/
